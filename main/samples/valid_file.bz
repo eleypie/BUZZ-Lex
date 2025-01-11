@@ -1,16 +1,23 @@
-#myvariable
-#myvariable6 fdf4
-#secretValue
-#adelina123
-#hello
-#123start
-#~cdddf
-#name%var
 
-~function
-~NameFunc
-~cal(culate$
-~123
+#myvariable
+#myvariable6
+#secretValue
+
+
+#123start
+#my-variable
+myvariable
+
+
+~calculatearea
+~computelength1
+~helloWorld
+
+
+~123start
+~my-function
+~HelloWorld
+
 
 +
 -
@@ -18,57 +25,40 @@
 /
 %
 ^
-DIV
+//
 
-=
-<
+
 >
 >=
+<
 <=
 ==
-=
 !=
+
 
 &&
 !
 ||
 
-true
-false
-221
-1.5ds
-3.5.5
-"string"
-"this is a string"
 
-(
-)
-[
-]
-{
-}
-'
-;
-,
+++
+--
 
-<|comment:>
+
+=
+
 
 buzz
 beegin
 queenbee
 beegone
 for
-this
-is
 while
 do
-upto
-downto
 hive
-size
 sting
 if
-returns 
+returns
 elseif
 else
 hover
@@ -77,17 +67,29 @@ buzzout
 switch
 case
 
+
 char
 chain
 int
 float
 bool
-returnvalue
+true
+false
 
 
-5 + 2 = 7
+<|| This is a block comment. 
+It spans multiple lines. 
+It can include text, symbols, or numbers. :>
 
-if(#varA == #varB) {
-   #a + #b = #c
+
+;
+,
+(
+)
+[
+]
+{
 }
+“
+‘
 
