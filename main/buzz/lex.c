@@ -20,6 +20,8 @@ int char_class;
 #define NOISE_WORD 2
 #define COMMENT_BEGIN 1001
 #define COMMENT_END 1003
+#define INCREMENT 1
+#define DECREMENT -1
 
 
 Token *lex(FILE *file, size_t *token_count) {
@@ -465,14 +467,7 @@ case 'r':  // Start with 'r' for the keyword 'return'
 
 
     case 's':  // Start with 's' for the keyword 'size', 'sting', 'switch'
-        if (strlen(lexeme) == 4 &&
-            lexeme[1] == 'i' && 
-            lexeme[2] == 'z' && 
-            lexeme[3] == 'e') {
-            *type = SIZE_TOKEN;
-            return 1;  // Matched 'size'
-        }
-        else if (strlen(lexeme) == 5 &&
+        if (strlen(lexeme) == 5 &&
                  lexeme[1] == 't' && 
                  lexeme[2] == 'i' && 
                  lexeme[3] == 'n' && 
@@ -488,26 +483,6 @@ case 'r':  // Start with 'r' for the keyword 'return'
                  lexeme[5] == 'h') {
             *type = SWITCH_TOKEN;
             return 1;  // Matched 'switch'
-        }
-        break;
-
-    case 't':  // Start with 't' for the keyword 'this'
-        if (strlen(lexeme) == 4 &&
-            lexeme[1] == 'h' && 
-            lexeme[2] == 'i' && 
-            lexeme[3] == 's') {
-            *type = THIS_TOKEN;
-            return 1;  // Matched 'this'
-        }
-        break;
-
-    case 'u':  // Start with 'u' for the keyword 'upto'
-        if (strlen(lexeme) == 4 &&
-            lexeme[1] == 'p' && 
-            lexeme[2] == 't' && 
-            lexeme[3] == 'o') {
-            *type = UPTO_TOKEN;
-            return 1;  // Matched 'upto'
         }
         break;
 
@@ -688,118 +663,151 @@ int isDelimiter(char *lexeme, char ch, int *type, FILE *file) {
 }
 
 
-
 int isOperator(char *lexeme, char ch, int *type, FILE *file) {
-	switch(ch) {
-    	case '+':	
-    		*type = ADDITION;
-    		return 1;
-    	case '-':
-    		*type = SUBTRACTION;
-    		return 1;
-    	case '*':
-    		*type = MULTIPLICATION;
-    		return 1;
-    	case '/':
-    		*type = DIVISION;
-    		return 1;
-    	case '%':
-    		*type = MODULO;
-    		return 1;
-    	case '^':
-    		*type = EXPONENT;
-    		return 1;
-    	case 'D':
-    		ch = getc(file);
-    		if(ch == 'I') {
-    			lexeme[lexeme_index++] = ch;
-    			ch = getc(file);
-    			if(ch == 'V') {
-    				lexeme[lexeme_index++] = ch;
-    				*type = INT_DIVISION;
-    				return 1;
-				} else {
-					ungetc(ch, file);
-					return 0;
-				}
-			} else {
-				ungetc(ch, file);
-				return 0;
-			}
-		case '>':
-    		ch = getNextChar(file);
-    		if(ch == '=') {
-    			lexeme[lexeme_index++] = ch;
-    			*type = GREATER_EQUAL;
-    			return 1;
-			} else {
-				ungetc(ch, file);
-				column--;
-	    		*type = GREATER_THAN;
-	    		return 1;	
-	    	}
-    	case '<':
-    		ch = getNextChar(file);
-    		if(ch == '=') {
-    			lexeme[lexeme_index++] = ch;
-    			*type = LESS_EQUAL;
-    			return 1;
-			} else {
-				ungetc(ch, file);
-				column--;
-	    		*type = LESS_THAN;
-	    		return 1;	
-	    	}
-    	case '=':
-    		ch = getNextChar(file);
-    		if(ch == '=') {
-    			lexeme[lexeme_index++] = ch;
-    			*type = IS_EQUAL_TO;
-    			return 1;
-			} else {
-				ungetc(ch, file);
-				column--;
-	    		*type = ASSIGNMENT_OP;
-	    		return 1;	
-	    	}
-	   	case '&':
-    		ch = getNextChar(file);
-    		if(ch == '&') {
-    			lexeme[lexeme_index++] = ch;
-    			*type = AND;
-    			return 1;
-			} else {
-				ungetc(ch, file);
-				column--;
-				return 0;
-	    	}
-	    case '|':
-    		ch = getNextChar(file);
-    		if(ch == '|') {
-    			lexeme[lexeme_index++] = ch;
-    			*type = OR;
-    			return 1;
-			} else {
-				ungetc(ch, file);
-				column--;
-				return 0;
-	    	}
-	   	case '!':
-    		ch = getNextChar(file);
-    		if(ch == '=') {
-    			lexeme[lexeme_index++] = ch;
-    			*type = NOT_EQUAL;
-    			return 1;;
-			} else {
-				ungetc(ch, file);
-				column--;
-	    		*type = NOT;
-	    		return 1;	
-	    	}
-    	default:
-    		return 0; // not an operator
-	}
+    switch (ch) {
+        case '+':    
+            *type = ADDITION;
+            ch = getc(file);
+            if (ch == '+') {
+                *type = INCREMENT;
+                lexeme[lexeme_index++] = ch;
+                lexeme[lexeme_index] = '\0'; // Null-terminate lexeme
+                return 1;
+            } else {
+                ungetc(ch, file);
+            }
+            lexeme[lexeme_index] = '\0'; // Null-terminate lexeme
+            return 1;
+
+        case '-':
+            *type = SUBTRACTION;
+            ch = getc(file);
+            if (ch == '-') {
+                *type = DECREMENT;
+                lexeme[lexeme_index++] = ch;
+                lexeme[lexeme_index] = '\0'; // Null-terminate lexeme
+                return 1;
+            } else {
+                ungetc(ch, file);
+            }
+            lexeme[lexeme_index] = '\0'; // Null-terminate lexeme
+            return 1;
+
+        case '*':
+            *type = MULTIPLICATION;
+            lexeme[lexeme_index] = '\0'; // Null-terminate lexeme
+            return 1;
+
+        case '/':
+            ch = getNextChar(file);
+            if (ch == '/') {
+                lexeme[lexeme_index++] = ch;
+                *type = INT_DIVISION;
+                lexeme[lexeme_index] ='\0';
+                return 1;
+            } else {
+                ungetc(ch,file);
+                *type = DIVISION;
+                lexeme[lexeme_index] = '\0';
+                return 1;
+            }
+
+        case '%':
+            *type = MODULO;
+            lexeme[lexeme_index] = '\0'; // Null-terminate lexeme
+            return 1;
+
+        case '^':
+            *type = EXPONENT;
+            lexeme[lexeme_index] = '\0'; // Null-terminate lexeme
+            return 1;
+
+        case '>':
+            ch = getNextChar(file);
+            if (ch == '=') {
+                lexeme[lexeme_index++] = ch;
+                *type = GREATER_EQUAL;
+                lexeme[lexeme_index] = '\0'; // Null-terminate lexeme
+                return 1;
+            } else {
+                ungetc(ch, file);
+                *type = GREATER_THAN;
+                lexeme[lexeme_index] = '\0'; // Null-terminate lexeme
+                return 1;
+            }
+
+        case '<':
+            ch = getNextChar(file);
+            if (ch == '=') {
+                lexeme[lexeme_index++] = ch;
+                *type = LESS_EQUAL;
+                lexeme[lexeme_index] = '\0'; // Null-terminate lexeme
+                return 1;
+            } else {
+                ungetc(ch, file);
+                *type = LESS_THAN;
+                lexeme[lexeme_index] = '\0'; // Null-terminate lexeme
+                return 1;
+            }
+
+        case '=':
+            ch = getNextChar(file);
+            if (ch == '=') {
+                lexeme[lexeme_index++] = ch;
+                *type = IS_EQUAL_TO;
+                lexeme[lexeme_index] = '\0'; // Null-terminate lexeme
+                return 1;
+            } else {
+                ungetc(ch, file);
+                *type = ASSIGNMENT_OP;
+                lexeme[lexeme_index] = '\0'; // Null-terminate lexeme
+                return 1;
+            }
+
+        case '&':
+            ch = getNextChar(file);
+            if (ch == '&') {
+                lexeme[lexeme_index++] = ch;
+                *type = AND;
+                lexeme[lexeme_index] = '\0'; // Null-terminate lexeme
+                return 1;
+            } else {
+                ungetc(ch, file);
+                return 0; // Not a valid operator
+            }
+
+        case '|':
+            ch = getNextChar(file);
+            if (ch == '|') {
+                lexeme[lexeme_index++] = ch;
+                *type = OR;
+                lexeme[lexeme_index] = '\0'; // Null-terminate lexeme
+                return 1;
+            } else {
+                ungetc(ch, file);
+                return 0; // Not a valid operator
+            }
+
+        case '!':
+            ch = getNextChar(file);
+            if (ch == '=') {
+                lexeme[lexeme_index++] = ch;
+                *type = NOT_EQUAL;
+                lexeme[lexeme_index] = '\0'; // Null-terminate lexeme
+                return 1;
+            } else {
+                ungetc(ch, file);
+                *type = NOT;
+                lexeme[lexeme_index] = '\0'; // Null-terminate lexeme
+                return 1;
+            }
+
+        default:
+            return 0; // Not an operator
+    }
 }
+
+
 
 // return any character including spaces or newlines
 char getNextChar(FILE *file) {
@@ -841,7 +849,6 @@ char getNonBlank(FILE *file) {
     return ch; // Return the first non-blank character
 }
 
-
 void storeToken(Token *token, Token *tokens, char *lexeme, int type) {
     token->value = malloc(strlen(lexeme) + 1);
     lexeme[lexeme_index] = '\0';
@@ -858,3 +865,5 @@ void storeToken(Token *token, Token *tokens, char *lexeme, int type) {
        token->line, token->column, token->value ? token->value : "(null)", token->type);
 
 }
+
+
