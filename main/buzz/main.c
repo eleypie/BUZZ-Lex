@@ -26,7 +26,8 @@ int main(int argc, char *argv[]) {
     // Open the input file for reading
     FILE *file = fopen(argv[1], "r");
     if (!file) {
-        perror("Error: Unable to open input file");
+        fprintf(stderr, "Error: Unable to open file '%s'.\n", argv[1]);
+        perror("File Error");
         return EXIT_FAILURE;
     }
 
@@ -34,39 +35,30 @@ int main(int argc, char *argv[]) {
     fseek(file, 0, SEEK_END);
     long file_size = ftell(file);
     fseek(file, 0, SEEK_SET);
-    printf("DEBUG: Input file size: %ld bytes\n", file_size);
-
     if (file_size == 0) {
         fprintf(stderr, "Error: Input file is empty.\n");
         fclose(file);
         return EXIT_FAILURE;
     }
 
-
     // Open the output file for writing
     FILE *outputFile = fopen(argv[2], "w");
     if (!outputFile) {
-        perror("Error: Unable to create output file");
+        fprintf(stderr, "Error: Unable to create file '%s'.\n", argv[2]);
+        perror("File Error");
         fclose(file);
         return EXIT_FAILURE;
     }
 
     // Tokenize the input file
     size_t token_count = 0;
-    Token *tokens = lex(file, &token_count); // Pass &token_count as second argument
+    Token *tokens = lex(file, &token_count);
     fclose(file);  // Close the input file after lexing
 
     if (!tokens) {
         fprintf(stderr, "Error: Failed to tokenize input file\n");
         fclose(outputFile);
         return EXIT_FAILURE;
-    }
-
-    // Debugging output for tokens
-    printf("DEBUG: Token count: %lu\n", (unsigned long)token_count);
-    for (int i = 0; tokens[i].type != END_OF_TOKENS; i++) {
-        printf("DEBUG: Token[%d] -> LINE: %u, COLUMN: %u, LEXEME: '%s', TYPE: %d\n", 
-               i, tokens[i].line, tokens[i].column, tokens[i].value ? tokens[i].value : "(null)", tokens[i].type);
     }
 
     // Token type strings
@@ -87,29 +79,28 @@ int main(int argc, char *argv[]) {
         "COMMENT", "VAR_IDENT", "FUNC_IDENT", "NOISE_WORD", "INVALID", "END_OF_TOKENS"
     };
 
-    // Print tokens to console
-    printf("%-20s %-20s\n", "TOKEN", "TOKEN TYPE");
-    printf("--------------------------------------------\n");
-
-    for (int i = 0; tokens[i].type != END_OF_TOKENS; i++) {
-        printf("%-20s %-20s\n",
-               tokens[i].value ? tokens[i].value : "(null)",  // Token value
-               token_type[tokens[i].type]);                 // Token type
-    }
-
-    // Write tokens to the output file
+    // Write tokens to the output file and print to the console
     fprintf(outputFile, "%-20s %-20s\n", "TOKEN", "TOKEN TYPE");
     fprintf(outputFile, "--------------------------------------------\n");
+
+    printf("%-20s %-20s\n", "TOKEN", "TOKEN TYPE");
+    printf("--------------------------------------------\n");
 
     for (int i = 0; tokens[i].type != END_OF_TOKENS; i++) {
         fprintf(outputFile, "%-20s %-20s\n",
                 tokens[i].value ? tokens[i].value : "(null)", // Token value
                 token_type[tokens[i].type]);                 // Token type
+
+        printf("%-20s %-20s\n",
+               tokens[i].value ? tokens[i].value : "(null)", // Token value
+               token_type[tokens[i].type]);                  // Token type
     }
 
     // Free allocated memory for tokens
     for (int i = 0; tokens[i].type != END_OF_TOKENS; i++) {
-        free(tokens[i].value);
+        if (tokens[i].value) {
+            free(tokens[i].value);
+        }
     }
     free(tokens);
 
