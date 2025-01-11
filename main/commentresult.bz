@@ -1,0 +1,17 @@
+TOKEN                TOKEN TYPE          
+--------------------------------------------
+<|| This is a block comment.
+It spans multiple lines.
+The lexer should handle this correctly. :> COMMENT             
+<                    COMMENT             
+||                   OR                  
+:                    INVALID             
+>                    GREATER_THAN        
+<                    COMMENT             
+||                   OR                  
+This                 INVALID             
+block                INVALID             
+comment              INVALID             
+is                   IS_TOKEN            
+not                  INVALID             
+closed               INVALID             

@@ -1,0 +1,105 @@
+// Identifiers
+TOKEN:  #myvariable          TYPE: VAR_IDENT
+TOKEN:  #myvariable6         TYPE: VAR_IDENT
+TOKEN:  #secretValue         TYPE: VAR_IDENT
+TOKEN:  #adelina123          TYPE: VAR_IDENT
+TOKEN:  #hello               TYPE: VAR_IDENT
+TOKEN:  #name                TYPE: VAR_IDENT
+TOKEN:  #a                   TYPE: VAR_IDENT
+TOKEN:  #b                   TYPE: VAR_IDENT
+TOKEN:  #c                   TYPE: VAR_IDENT
+
+// Function Identifiers
+TOKEN:  ~function            TYPE: FUNC_IDENT
+TOKEN:  ~NameFunc            TYPE: FUNC_IDENT
+TOKEN:  ~cal                 TYPE: FUNC_IDENT
+
+// Operators
+TOKEN:  +                    TYPE: ADDITION
+TOKEN:  -                    TYPE: SUBTRACTION
+TOKEN:  *                    TYPE: MULTIPLICATION
+TOKEN:  /                    TYPE: DIVISION
+TOKEN:  %                    TYPE: MODULO
+TOKEN:  ^                    TYPE: EXPONENT
+TOKEN:  =                    TYPE: ASSIGNMENT_OP
+TOKEN:  <                    TYPE: LESS_THAN
+TOKEN:  >                    TYPE: GREATER_THAN
+TOKEN:  >=                   TYPE: GREATER_EQUAL
+TOKEN:  <=                   TYPE: LESS_EQUAL
+TOKEN:  ==                   TYPE: IS_EQUAL_TO
+TOKEN:  !=                   TYPE: NOT_EQUAL
+TOKEN:  &&                   TYPE: AND
+TOKEN:  ||                   TYPE: OR
+TOKEN:  !                    TYPE: NOT
+
+// Delimiters
+TOKEN:  (                    TYPE: LEFT_PAREN
+TOKEN:  )                    TYPE: RIGHT_PAREN
+TOKEN:  [                    TYPE: LEFT_BRACKET
+TOKEN:  ]                    TYPE: RIGHT_BRACKET
+TOKEN:  {                    TYPE: LEFT_BRACE
+TOKEN:  }                    TYPE: RIGHT_BRACE
+TOKEN:  ;                    TYPE: SEMICOLON
+TOKEN:  ,                    TYPE: COMMA
+TOKEN:  "                    TYPE: DBL_QUOTE
+TOKEN:  '                    TYPE: SNGL_QUOTE
+
+// Keywords
+TOKEN:  buzz                 TYPE: BUZZ_TOKEN
+TOKEN:  beegin               TYPE: BEEGIN_TOKEN
+TOKEN:  queenbee             TYPE: QUEENBEE_TOKEN
+TOKEN:  beegone              TYPE: BEEGONE_TOKEN
+TOKEN:  for                  TYPE: FOR_TOKEN
+TOKEN:  this                 TYPE: THIS_TOKEN
+TOKEN:  is                   TYPE: IS_TOKEN
+TOKEN:  while                TYPE: WHILE_TOKEN
+TOKEN:  do                   TYPE: DO_TOKEN
+TOKEN:  upto                 TYPE: UPTO_TOKEN
+TOKEN:  downto               TYPE: DOWNTO_TOKEN
+TOKEN:  hive                 TYPE: HIVE_TOKEN
+TOKEN:  size                 TYPE: SIZE_TOKEN
+TOKEN:  sting                TYPE: STING_TOKEN
+TOKEN:  if                   TYPE: IF_TOKEN
+TOKEN:  returns              TYPE: RETURNS_TOKEN
+TOKEN:  elseif               TYPE: ELSEIF_TOKEN
+TOKEN:  else                 TYPE: ELSE_TOKEN
+TOKEN:  hover                TYPE: HOVER_TOKEN
+TOKEN:  gather               TYPE: GATHER_TOKEN
+TOKEN:  buzzout              TYPE: BUZZOUT_TOKEN
+TOKEN:  switch               TYPE: SWITCH_TOKEN
+TOKEN:  case                 TYPE: CASE_TOKEN
+
+// Reserved Words
+TOKEN:  char                 TYPE: CHAR_TOKEN
+TOKEN:  chain                TYPE: CHAIN_TOKEN
+TOKEN:  int                  TYPE: INT_TOKEN
+TOKEN:  float                TYPE: FLOAT_TOKEN
+TOKEN:  bool                 TYPE: BOOL_TOKEN
+TOKEN:  true                 TYPE: TRUE_TOKEN
+TOKEN:  false                TYPE: FALSE_TOKEN
+
+// Literals
+TOKEN:  221                  TYPE: INTEGER
+TOKEN:  1.5                  TYPE: FLOAT
+TOKEN:  5                    TYPE: INTEGER
+TOKEN:  2                    TYPE: INTEGER
+TOKEN:  7                    TYPE: INTEGER
+TOKEN:  string               TYPE: STRING
+
+// Comments
+TOKEN:  <|comment:>          TYPE: COMMENT
+
+// Noise Words
+TOKEN:  returnvalue          TYPE: NOISE_WORD
+
+// Invalid Tokens
+TOKEN:  fdf4                 TYPE: INVALID
+TOKEN:  #123start            TYPE: INVALID
+TOKEN:  #~cdddf              TYPE: INVALID
+TOKEN:  $                    TYPE: INVALID
+TOKEN:  ~123                 TYPE: INVALID
+TOKEN:  var                  TYPE: INVALID
+TOKEN:  DIV                  TYPE: INVALID
+TOKEN:  ds                   TYPE: INVALID
+TOKEN:  3.5.5                TYPE: INVALID
+TOKEN:  culate               TYPE: INVALID

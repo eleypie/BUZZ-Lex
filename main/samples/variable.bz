@@ -1,0 +1,4 @@
+#myvariable = 5;
+if (#a == #b) {
+    #c = #a + #b;
+}
